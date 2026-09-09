@@ -1,0 +1,168 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "about": "About",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "reservations": "Reservations",
+    "callNow": "Call Now",
+    "getDirections": "Get Directions"
+  },
+  "hero": {
+    "eyebrow": "Peradiz — Al Olaya, Riyadh",
+    "titleLine1": "A Premium Indian",
+    "titleLine2": "Dining Experience",
+    "subtitle": "Authentic Indian flavors, exceptional presentation — in the heart of Al Olaya, Riyadh",
+    "ctaMenu": "Explore the Menu",
+    "ctaReserve": "Request a Table",
+    "ratingLabel": "Google rating"
+  },
+  "intro": {
+    "eyebrow": "Our Story",
+    "title": "The Origin of Indian Food",
+    "body": "Peradiz is part of the Paradise global Indian restaurant chain, bringing authentic Indian flavors together with exceptional presentation in a refined, tranquil setting — with private rooms for families."
+  },
+  "highlights": {
+    "title": "Signature Dishes",
+    "subtitle": "A selection of our most loved dishes",
+    "vegetarian": "Vegetarian",
+    "askForPricing": "Pricing available in-restaurant"
+  },
+  "about": {
+    "eyebrow": "About Us",
+    "title": "Refined Ambiance, Authentic Hospitality",
+    "body1": "At Peradiz, we take you on an experience that combines great taste with distinguished presentation — and we have private rooms for families.",
+    "body2": "Peradiz is part of the Paradise global Indian restaurant chain, proudly bringing the origin of Indian food to our guests in Riyadh.",
+    "serviceOptions": "Service Options",
+    "dineIn": "Dine-in",
+    "takeaway": "Takeaway",
+    "delivery": "No-contact delivery",
+    "familyRooms": "Private family rooms"
+  },
+  "menuPreview": {
+    "title": "A Taste of Our Menu",
+    "subtitle": "Browse a selection of our authentic Indian dishes",
+    "viewFullMenu": "View Full Menu"
+  },
+  "hours": {
+    "title": "Opening Hours",
+    "note": "Please call to confirm full opening hours",
+    "openNow": "OPEN NOW",
+    "closed": "CLOSED",
+    "today": "Today",
+    "closedAllDay": "Closed",
+    "notVerifiedNotice": "These hours are provisional and not yet confirmed by the restaurant — please call to check before visiting."
+  },
+  "location": {
+    "title": "Our Location",
+    "address": "Address",
+    "phone": "Phone",
+    "getDirections": "Get Directions",
+    "viewOnGoogleMaps": "View on Google Maps",
+    "callUs": "Call Us",
+    "whatsapp": "WhatsApp"
+  },
+  "cta": {
+    "title": "Reserve Your Premium Experience Today",
+    "subtitle": "We look forward to welcoming you to Peradiz Al Olaya",
+    "button": "Request a Table"
+  },
+  "footer": {
+    "tagline": "The Origin of Indian Food",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved"
+  },
+  "menuPage": {
+    "title": "Our Menu",
+    "subtitle": "Authentic flavors from the heart of Indian cuisine",
+    "priceNote": "Pricing available in-restaurant — our team will be happy to help",
+    "vegetarian": "Vegetarian",
+    "signature": "Signature",
+    "allCategories": "All",
+    "comingSoon": "This section will be added soon"
+  },
+  "aboutPage": {
+    "title": "About Peradiz",
+    "subtitle": "The Origin of Indian Food",
+    "storyTitle": "Our Story",
+    "story": "Peradiz is part of the Paradise global Indian restaurant chain. At our Al Olaya, Riyadh branch, we bring together authentic Indian flavors and exceptional presentation in a refined setting.",
+    "diningTitle": "The Dining Experience",
+    "dining": "We offer a tranquil, upscale atmosphere with private family rooms and attentive service for every guest."
+  },
+  "galleryPage": {
+    "title": "Gallery",
+    "subtitle": "A glimpse into the Peradiz atmosphere",
+    "placeholderNote": "Real restaurant photography will be added soon",
+    "allCategories": "All",
+    "categories": {
+      "exterior": "Exterior",
+      "interior": "Interior",
+      "diningArea": "Dining Area",
+      "dish": "Signature Dishes",
+      "presentation": "Presentation",
+      "atmosphere": "Atmosphere"
+    },
+    "openImage": "Open image",
+    "closeLightbox": "Close",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "imageCounter": "{current} of {total}"
+  },
+  "contactPage": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you",
+    "formTitle": "Send Us a Message",
+    "name": "Name",
+    "phone": "Phone number",
+    "email": "Email (optional)",
+    "message": "Your message",
+    "submit": "Send Message",
+    "submitting": "Sending...",
+    "success": "Your message was sent successfully — we'll be in touch soon.",
+    "error": "Something went wrong sending your message. Please try again or call us directly."
+  },
+  "reservationsPage": {
+    "title": "Request a Reservation",
+    "subtitle": "We look forward to welcoming you — our team will call to confirm your booking",
+    "disclaimer": "This is a reservation request, not a confirmed booking — our team will call to confirm the details.",
+    "name": "Name",
+    "phone": "Phone number",
+    "email": "Email (optional)",
+    "partySize": "Party size",
+    "date": "Preferred date",
+    "time": "Preferred time",
+    "notes": "Additional notes (optional)",
+    "contactMethod": "Preferred contact method",
+    "contactPhone": "Phone",
+    "contactEmail": "Email",
+    "submit": "Send Reservation Request",
+    "submitting": "Sending...",
+    "success": "Your reservation request was received — we'll call soon to confirm.",
+    "error": "Something went wrong sending your request. Please try again or call us directly."
+  },
+  "chat": {
+    "widgetLabel": "Chat with us",
+    "title": "Peradiz Assistant",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "greeting": "Welcome to Peradiz! How can I help you today?",
+    "unavailable": "The chat assistant is currently unavailable — please call us directly.",
+    "error": "Something went wrong. Please try again.",
+    "close": "Close chat",
+    "inputLabel": "Your message",
+    "rateLimited": "You're sending messages a little fast — please wait a moment and try again.",
+    "suggestions": {
+      "openNow": "Are you open now?",
+      "location": "Where are you located?",
+      "biryani": "Show me the biryani menu",
+      "recommend": "What dishes do you recommend?"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "required": "This field is required"
+  }
+}

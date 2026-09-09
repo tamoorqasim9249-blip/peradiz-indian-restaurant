@@ -1,0 +1,54 @@
+// Peradiz website — Prisma schema
+// See CLAUDE.md §8 for rationale. Two lean models only — no workflow engine, no admin auth.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SubmissionStatus {
+  NEW
+  CONTACTED
+  CLOSED
+}
+
+enum PreferredContactMethod {
+  PHONE
+  EMAIL
+}
+
+model ContactSubmission {
+  id        String           @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  message   String           @db.Text
+  locale    String           @default("ar")
+  status    SubmissionStatus @default(NEW)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model ReservationRequest {
+  id            String                  @id @default(cuid())
+  name          String
+  phone         String
+  email         String?
+  partySize     Int
+  preferredDate DateTime                @db.Date
+  preferredTime String
+  notes         String?                 @db.Text
+  contactMethod PreferredContactMethod  @default(PHONE)
+  locale        String                  @default("ar")
+  status        SubmissionStatus        @default(NEW)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+
+  @@index([status, preferredDate])
+}

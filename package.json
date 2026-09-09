@@ -1,0 +1,41 @@
+{
+  "name": "peradiz-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.124.0",
+    "@hookform/resolvers": "^5.9.1",
+    "@prisma/client": "6.19.3",
+    "next": "16.3.4",
+    "next-intl": "^4.14.2",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-hook-form": "^7.87.0",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.4",
+    "prisma": "6.19.3",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "4.1.11"
+  }
+}
