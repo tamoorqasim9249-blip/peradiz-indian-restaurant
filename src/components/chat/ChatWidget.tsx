@@ -7,9 +7,10 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { ChatMessage } from "./ChatMessage";
 
 type ChatRole = "user" | "assistant";
-interface ChatMessage {
+interface ChatMessageData {
   id: string;
   role: ChatRole;
   content: string;
@@ -30,7 +31,7 @@ export function ChatWidget() {
   const inputId = useId();
 
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessageData[]>([]);
   const [draft, setDraft] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -61,7 +62,7 @@ export function ChatWidget() {
     if (!trimmed || isStreaming) return;
 
     setNotice(null);
-    const userMessage: ChatMessage = { id: newId(), role: "user", content: trimmed };
+    const userMessage: ChatMessageData = { id: newId(), role: "user", content: trimmed };
     const assistantId = newId();
     const nextMessages = [...messages, userMessage];
     setMessages([...nextMessages, { id: assistantId, role: "assistant", content: "" }]);
@@ -168,19 +169,7 @@ export function ChatWidget() {
             <p className="rounded-xl bg-ink/5 px-3 py-2 text-ink/80">{t("greeting")}</p>
 
             {messages.map((m) => (
-              <p
-                key={m.id}
-                className={`max-w-[85%] whitespace-pre-wrap rounded-xl px-3 py-2 ${
-                  m.role === "user"
-                    ? "ms-auto bg-chili text-paper"
-                    : "bg-ink/5 text-ink/80"
-                }`}
-              >
-                {m.content}
-                {m.role === "assistant" && m.content === "" && isStreaming && (
-                  <TypingDots />
-                )}
-              </p>
+              <ChatMessage key={m.id} role={m.role} content={m.content} isStreaming={isStreaming} />
             ))}
 
             {notice && (
@@ -249,15 +238,5 @@ export function ChatWidget() {
         </svg>
       </button>
     </div>
-  );
-}
-
-function TypingDots() {
-  return (
-    <span className="inline-flex items-center gap-1 align-middle" aria-hidden="true">
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink/40" />
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink/40 [animation-delay:150ms]" />
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink/40 [animation-delay:300ms]" />
-    </span>
   );
 }
