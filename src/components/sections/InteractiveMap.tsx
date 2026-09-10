@@ -51,6 +51,11 @@ function loadGoogleMapsScript(apiKey: string): Promise<void> {
  * verified Al Olaya coordinates when NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is configured; otherwise
  * (no key provisioned yet, or the script fails to load) falls back to the existing free,
  * keyless GoogleMapEmbed iframe — the site never depends on a Maps key existing.
+ *
+ * The (comparatively heavy) Google Maps JS API script is only fetched once this section is
+ * within ~200px of the viewport (IntersectionObserver) rather than eagerly on mount — this
+ * section sits below the fold on the home page, so a visitor who never scrolls that far never
+ * pays for it.
  */
 export function InteractiveMap({ className = "" }: { className?: string }) {
   const locale = useLocale();
@@ -59,9 +64,28 @@ export function InteractiveMap({ className = "" }: { className?: string }) {
   const [status, setStatus] = useState<"loading" | "ready" | "fallback">(
     MAPS_API_KEY ? "loading" : "fallback"
   );
+  // The map sits below the fold on the home page — don't fetch the (much heavier) Maps JS API
+  // script until this section is actually about to scroll into view.
+  const [isNearViewport, setIsNearViewport] = useState(false);
 
   useEffect(() => {
     if (!MAPS_API_KEY || !containerRef.current) return;
+    const node = containerRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNearViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!MAPS_API_KEY || !isNearViewport || !containerRef.current) return;
 
     let cancelled = false;
 
@@ -108,7 +132,7 @@ export function InteractiveMap({ className = "" }: { className?: string }) {
     return () => {
       cancelled = true;
     };
-  }, [isAr]);
+  }, [isAr, isNearViewport]);
 
   if (status === "fallback") {
     return <GoogleMapEmbed className={className} />;

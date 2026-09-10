@@ -19,26 +19,39 @@ import { siteUrl } from "@/lib/site";
 import { restaurantFacts } from "../../../content/restaurant-facts";
 import "../globals.css";
 
+// Font loaders must be called at module top level, and this one `[locale]/layout.tsx` file
+// renders BOTH locale route trees — so Next.js cannot tell, at build time, which pair of
+// fonts a given request will actually need, and (with the default `preload: true`) would emit
+// a <link rel="preload" as="font"> for all four families on every request to either locale.
+// Concretely: an /en visitor was downloading the Arabic Noto Kufi + IBM Plex Sans Arabic (4
+// weights) font files, and an /ar visitor was downloading Playfair + Inter, even though
+// globals.css's `[dir="rtl"]`/`[dir="ltr"]` rules (see CLAUDE.md §14) mean only 2 of the 4 are
+// ever rendered with on a given page. `preload: false` here stops that wasted fetch; `display:
+// "swap"` (kept below) still avoids invisible text while the *correct* 2 fonts load.
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
+  preload: false,
 });
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  preload: false,
 });
 const notoKufi = Noto_Kufi_Arabic({
   subsets: ["arabic"],
   variable: "--font-noto-kufi",
   display: "swap",
+  preload: false,
 });
 const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-plex-arabic",
   display: "swap",
+  preload: false,
 });
 
 export function generateStaticParams() {

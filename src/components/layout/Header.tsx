@@ -31,7 +31,10 @@ export function Header() {
               fill
               sizes="44px"
               className="object-cover"
-              priority
+              // Not `priority`: the Hero background image is the actual LCP element on every
+              // page, and a second preload here would compete with it for early bandwidth.
+              // This logo is tiny (44px) and always in the initial viewport, so it still loads
+              // quickly under the browser's normal eager fetch for near-top-of-document images.
             />
           </span>
           <span className="hidden font-display text-lg text-ink sm:block">

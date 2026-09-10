@@ -55,6 +55,18 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      {
+        // Direct requests to public/images/** (e.g. the og:image a social-media crawler
+        // fetches, or the favicon fallback) — NOT the same route as /_next/image, which Next.js
+        // already caches itself (Cache-Control driven by `images.minimumCacheTTL`, currently
+        // its 4-hour default). Without this, Next serves these with `max-age=0` — refetched
+        // every time. A short, non-`immutable` cache is used deliberately: real photography is
+        // documented (README "Photo Gallery") to drop into these exact filenames later with no
+        // code change, so caching them forever would hide that swap from returning visitors
+        // for a year instead of the redeploy actually taking effect.
+        source: "/images/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, must-revalidate" }],
+      },
     ];
   },
 };

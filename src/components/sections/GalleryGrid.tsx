@@ -2,9 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useLocale, useTranslations } from "next-intl";
 import { galleryImages, type GalleryCategory } from "../../../content/gallery/images";
-import { Lightbox } from "./Lightbox";
+
+// Most visitors browse the grid and never open a photo — code-split the lightbox (focus trap,
+// keyboard/swipe nav) out of the gallery page's initial JS and fetch it only on first click.
+const Lightbox = dynamic(() => import("./Lightbox").then((m) => m.Lightbox));
 
 const CATEGORIES: GalleryCategory[] = [
   "exterior",
