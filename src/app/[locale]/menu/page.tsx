@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type AppLocale } from "@/i18n/routing";
 import { Container } from "@/components/ui/Container";
 import { MenuBrowser } from "@/components/sections/MenuBrowser";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -13,16 +14,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isAr = locale === "ar";
-  return {
+  return buildPageMetadata({
+    locale: locale as AppLocale,
+    path: "/menu",
     title: isAr ? "قائمة الطعام" : "Menu",
     description: isAr
       ? "تصفح قائمة بيراديز — نكهات هندية أصيلة من المقبلات إلى البرياني والحلويات."
       : "Browse the Peradiz menu — authentic Indian flavors from starters to biryani and beyond.",
-    alternates: {
-      canonical: `/${locale}/menu`,
-      languages: { ar: "/ar/menu", en: "/en/menu" },
-    },
-  };
+  });
 }
 
 export default async function MenuPage({

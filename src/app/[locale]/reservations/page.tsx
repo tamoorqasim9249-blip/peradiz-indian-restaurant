@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type AppLocale } from "@/i18n/routing";
 import { Container } from "@/components/ui/Container";
 import { ReservationForm } from "@/components/forms/ReservationForm";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -13,16 +14,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isAr = locale === "ar";
-  return {
+  return buildPageMetadata({
+    locale: locale as AppLocale,
+    path: "/reservations",
     title: isAr ? "طلب حجز" : "Reservations",
     description: isAr
       ? "اطلب حجزاً في مطعم بيراديز الهندي — سيتصل بك فريقنا للتأكيد."
       : "Request a table at Peradiz Indian Restaurant — our team will call to confirm.",
-    alternates: {
-      canonical: `/${locale}/reservations`,
-      languages: { ar: "/ar/reservations", en: "/en/reservations" },
-    },
-  };
+  });
 }
 
 export default async function ReservationsPage({

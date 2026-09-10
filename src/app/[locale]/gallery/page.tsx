@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type AppLocale } from "@/i18n/routing";
 import { Container } from "@/components/ui/Container";
 import { GalleryGrid } from "@/components/sections/GalleryGrid";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -13,16 +14,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isAr = locale === "ar";
-  return {
+  return buildPageMetadata({
+    locale: locale as AppLocale,
+    path: "/gallery",
     title: isAr ? "معرض الصور" : "Gallery",
     description: isAr
       ? "لمحة عن أجواء بيراديز — الواجهة الخارجية، التصميم الداخلي، الأطباق المميزة، وتقديم الطعام."
       : "A glimpse into the Peradiz atmosphere — exterior, interior, signature dishes, and food presentation.",
-    alternates: {
-      canonical: `/${locale}/gallery`,
-      languages: { ar: "/ar/gallery", en: "/en/gallery" },
-    },
-  };
+  });
 }
 
 export default async function GalleryPage({

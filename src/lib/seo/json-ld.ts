@@ -1,3 +1,4 @@
+import type { AppLocale } from "@/i18n/routing";
 import { restaurantFacts } from "../../../content/restaurant-facts";
 
 /**
@@ -6,15 +7,15 @@ import { restaurantFacts } from "../../../content/restaurant-facts";
  * because neither is verified; do not add them here without updating restaurant-facts.ts with
  * a real, sourced value first.
  */
-export function buildRestaurantJsonLd(siteUrl: string) {
+export function buildRestaurantJsonLd(siteUrl: string, locale: AppLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "Restaurant",
     name: restaurantFacts.brand.nameEn,
     alternateName: restaurantFacts.brand.nameAr,
-    image: [`${siteUrl}${restaurantFacts.brand.logoPath}`],
+    image: [`${siteUrl}/images/og/og-${locale}.jpg`],
     logo: `${siteUrl}${restaurantFacts.brand.logoPath}`,
-    url: siteUrl,
+    url: `${siteUrl}/${locale}`,
     telephone: restaurantFacts.contact.phoneE164,
     servesCuisine: restaurantFacts.brand.cuisine,
     address: {
@@ -29,12 +30,15 @@ export function buildRestaurantJsonLd(siteUrl: string) {
       latitude: restaurantFacts.location.geo.latitude,
       longitude: restaurantFacts.location.geo.longitude,
     },
+    hasMap: restaurantFacts.location.googleMapsUrl,
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: restaurantFacts.rating.value,
       reviewCount: restaurantFacts.rating.count,
     },
-    acceptsReservations: `${siteUrl}/ar/reservations`,
+    // Points at this locale's reservation-*request* page (staff confirm by phone — not
+    // instant booking), matching the routing.defaultLocale/locale actually being rendered.
+    acceptsReservations: `${siteUrl}/${locale}/reservations`,
     sameAs: [restaurantFacts.social.x, restaurantFacts.social.linktree],
     // priceRange: intentionally omitted — not verified.
     // openingHoursSpecification: intentionally omitted — full weekly hours not verified.

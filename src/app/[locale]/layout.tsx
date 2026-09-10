@@ -14,6 +14,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 import { buildRestaurantJsonLd } from "@/lib/seo/json-ld";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import { siteUrl } from "@/lib/site";
 import { restaurantFacts } from "../../../content/restaurant-facts";
 import "../globals.css";
@@ -59,35 +60,20 @@ export async function generateMetadata({
     ? "تجربة طعام هندي فاخرة في قلب العليا، الرياض — نكهات أصيلة وتقديم استثنائي."
     : "A premium Indian dining experience in the heart of Al Olaya, Riyadh — authentic flavors, exceptional presentation.";
 
+  const pageMetadata = buildPageMetadata({ locale: locale as AppLocale, title, description });
+
   return {
     metadataBase: new URL(siteUrl),
+    // The home route's own title/description are wrapped in the `default`/`template` pair so
+    // every other route's plain string title (e.g. "Menu") becomes "Menu | Peradiz" for free.
     title: {
       default: title,
       template: `%s | ${restaurantFacts.brand.shortNameEn}`,
     },
     description,
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        ar: "/ar",
-        en: "/en",
-      },
-    },
-    openGraph: {
-      title,
-      description,
-      url: `${siteUrl}/${locale}`,
-      siteName: restaurantFacts.brand.shortNameEn,
-      locale: isAr ? "ar_SA" : "en_US",
-      type: "website",
-      images: [{ url: restaurantFacts.brand.logoPath }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: [restaurantFacts.brand.logoPath],
-    },
+    alternates: pageMetadata.alternates,
+    openGraph: pageMetadata.openGraph,
+    twitter: pageMetadata.twitter,
     icons: {
       icon: restaurantFacts.brand.logoPath,
     },
@@ -107,7 +93,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
   const dir = localeDirection[locale as AppLocale];
-  const jsonLd = buildRestaurantJsonLd(siteUrl);
+  const jsonLd = buildRestaurantJsonLd(siteUrl, locale as AppLocale);
 
   return (
     <html

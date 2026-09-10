@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type AppLocale } from "@/i18n/routing";
 import { Container } from "@/components/ui/Container";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 import { restaurantFacts } from "../../../../content/restaurant-facts";
 
 export async function generateMetadata({
@@ -14,16 +15,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isAr = locale === "ar";
-  return {
+  return buildPageMetadata({
+    locale: locale as AppLocale,
+    path: "/contact",
     title: isAr ? "تواصل معنا" : "Contact",
     description: isAr
       ? "تواصل مع مطعم بيراديز الهندي في العليا، الرياض."
       : "Get in touch with Peradiz Indian Restaurant in Al Olaya, Riyadh.",
-    alternates: {
-      canonical: `/${locale}/contact`,
-      languages: { ar: "/ar/contact", en: "/en/contact" },
-    },
-  };
+  });
 }
 
 export default async function ContactPage({

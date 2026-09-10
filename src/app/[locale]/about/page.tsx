@@ -3,9 +3,10 @@ import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type AppLocale } from "@/i18n/routing";
 import { Container } from "@/components/ui/Container";
 import { RatingBadge } from "@/components/sections/RatingBadge";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -14,16 +15,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isAr = locale === "ar";
-  return {
+  return buildPageMetadata({
+    locale: locale as AppLocale,
+    path: "/about",
     title: isAr ? "من نحن" : "About",
     description: isAr
       ? "تعرف على قصة مطعم بيراديز الهندي في العليا، الرياض."
       : "Learn the story behind Peradiz Indian Restaurant in Al Olaya, Riyadh.",
-    alternates: {
-      canonical: `/${locale}/about`,
-      languages: { ar: "/ar/about", en: "/en/about" },
-    },
-  };
+  });
 }
 
 export default async function AboutPage({
