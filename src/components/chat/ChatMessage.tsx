@@ -4,10 +4,15 @@ export function ChatMessage({
   role,
   content,
   isStreaming,
+  speakerLabel,
 }: {
   role: "user" | "assistant";
   content: string;
   isStreaming?: boolean;
+  // Visually the sender is conveyed by bubble color + alignment alone — a screen reader has
+  // neither, so this prefixes each message with an announced (but visually hidden) "You" /
+  // "Peradiz Assistant" label instead of reading an unattributed wall of text.
+  speakerLabel: string;
 }) {
   return (
     <p
@@ -15,6 +20,7 @@ export function ChatMessage({
         role === "user" ? "ms-auto bg-chili text-paper" : "bg-ink/5 text-ink/80"
       }`}
     >
+      <span className="sr-only">{speakerLabel}: </span>
       {content}
       {role === "assistant" && content === "" && isStreaming && <TypingDots />}
     </p>

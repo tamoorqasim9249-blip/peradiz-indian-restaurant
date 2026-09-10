@@ -46,6 +46,7 @@ export function GalleryGrid() {
             setActive("all");
             setOpenIndex(null);
           }}
+          aria-pressed={active === "all"}
           className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
             active === "all"
               ? "bg-ink text-paper"
@@ -62,6 +63,7 @@ export function GalleryGrid() {
               setActive(category);
               setOpenIndex(null);
             }}
+            aria-pressed={active === category}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               active === category
                 ? "bg-ink text-paper"

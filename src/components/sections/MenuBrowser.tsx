@@ -59,6 +59,7 @@ export function MenuBrowser() {
         <button
           type="button"
           onClick={() => setActive("all")}
+          aria-pressed={active === "all"}
           className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
             active === "all"
               ? "bg-ink text-paper"
@@ -74,6 +75,7 @@ export function MenuBrowser() {
               key={category.id}
               type="button"
               onClick={() => setActive(category.id)}
+              aria-pressed={active === category.id}
               className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                 active === category.id
                   ? "bg-ink text-paper"
@@ -96,7 +98,7 @@ export function MenuBrowser() {
         .map((category) => (
           <div
             key={category.id}
-            className="rounded-2xl border border-dashed border-ink/15 p-6 text-center text-sm text-ink/45"
+            className="rounded-2xl border border-dashed border-ink/15 p-6 text-center text-sm text-ink/60"
           >
             <span className="font-display text-base text-ink/60">
               {isAr ? category.nameAr : category.nameEn}

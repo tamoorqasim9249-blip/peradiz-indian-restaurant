@@ -38,7 +38,7 @@ export function MenuPreview() {
               <span className="font-display text-lg text-ink">
                 {isAr ? item.nameAr : item.nameEn}
               </span>
-              <span className="shrink-0 text-xs text-gold">{highlights("askForPricing")}</span>
+              <span className="shrink-0 text-xs text-gold-deep">{highlights("askForPricing")}</span>
             </li>
           ))}
         </ul>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import {
   Playfair_Display,
@@ -105,6 +105,7 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
   const messages = await getMessages();
+  const t = await getTranslations("common");
   const dir = localeDirection[locale as AppLocale];
   const jsonLd = buildRestaurantJsonLd(siteUrl, locale as AppLocale);
 
@@ -121,9 +122,20 @@ export default async function LocaleLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* WCAG 2.4.1 Bypass Blocks: lets keyboard/screen-reader visitors jump straight past
+            the header nav (and, once open, the floating chat widget) to the page content.
+            Hidden until focused; `#main-content` is a real landmark below, not just an anchor. */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-chili focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-paper focus:shadow-lg"
+        >
+          {t("skipToContent")}
+        </a>
         <NextIntlClientProvider messages={messages}>
           <Header />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" tabIndex={-1} className="flex-1">
+            {children}
+          </main>
           <Footer />
           <ChatWidget />
         </NextIntlClientProvider>

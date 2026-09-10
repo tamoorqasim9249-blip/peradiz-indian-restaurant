@@ -7,7 +7,8 @@
     "contact": "Contact",
     "reservations": "Reservations",
     "callNow": "Call Now",
-    "getDirections": "Get Directions"
+    "getDirections": "Get Directions",
+    "toggleMenu": "Toggle menu"
   },
   "hero": {
     "eyebrow": "Peradiz — Al Olaya, Riyadh",
@@ -146,6 +147,7 @@
   "chat": {
     "widgetLabel": "Chat with us",
     "title": "Peradiz Assistant",
+    "you": "You",
     "placeholder": "Type your question...",
     "send": "Send",
     "greeting": "Welcome to Peradiz! How can I help you today?",
@@ -163,6 +165,8 @@
   },
   "common": {
     "loading": "Loading...",
-    "required": "This field is required"
+    "required": "This field is required",
+    "skipToContent": "Skip to main content",
+    "opensInNewTab": "(opens in a new tab)"
   }
 }

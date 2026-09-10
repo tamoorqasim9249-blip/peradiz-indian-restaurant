@@ -28,7 +28,7 @@ export function DishCard({ item }: { item: MenuItem }) {
         <p className="line-clamp-2 text-sm text-ink/60">
           {isAr ? item.descriptionAr : item.descriptionEn}
         </p>
-        <span className="mt-2 text-xs font-medium text-gold">{t("askForPricing")}</span>
+        <span className="mt-2 text-xs font-medium text-gold-deep">{t("askForPricing")}</span>
       </div>
     </article>
   );

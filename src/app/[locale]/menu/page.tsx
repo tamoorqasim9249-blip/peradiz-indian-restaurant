@@ -43,7 +43,7 @@ export default async function MenuPage({
           </span>
           <h1 className="font-display text-4xl text-ink sm:text-5xl">{t("title")}</h1>
           <p className="mx-auto max-w-xl text-ink/60">{t("subtitle")}</p>
-          <p className="mx-auto max-w-xl text-sm font-medium text-gold">{t("priceNote")}</p>
+          <p className="mx-auto max-w-xl text-sm font-medium text-gold-deep">{t("priceNote")}</p>
         </div>
 
         <MenuBrowser />

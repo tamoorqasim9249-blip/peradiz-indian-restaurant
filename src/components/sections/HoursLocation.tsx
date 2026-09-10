@@ -59,7 +59,7 @@ export function HoursLocation() {
                 <PinIcon />
               </span>
               <div>
-                <p className="text-sm font-semibold text-ink/50">{t("location.address")}</p>
+                <p className="text-sm font-semibold text-ink/60">{t("location.address")}</p>
                 <p className="mt-1 text-ink">
                   {isAr ? restaurantFacts.location.addressAr : restaurantFacts.location.addressEn}
                 </p>
@@ -71,13 +71,13 @@ export function HoursLocation() {
                 <ClockIcon />
               </span>
               <div>
-                <p className="text-sm font-semibold text-ink/50">{t("hours.title")}</p>
+                <p className="text-sm font-semibold text-ink/60">{t("hours.title")}</p>
                 <p className="mt-1 text-ink">
                   {isAr
                     ? restaurantFacts.hours.verifiedFragmentAr
                     : restaurantFacts.hours.verifiedFragmentEn}
                 </p>
-                <p className="mt-0.5 text-sm text-ink/50">{t("hours.note")}</p>
+                <p className="mt-0.5 text-sm text-ink/60">{t("hours.note")}</p>
               </div>
             </div>
 
@@ -86,7 +86,7 @@ export function HoursLocation() {
                 <PhoneIcon />
               </span>
               <div>
-                <p className="text-sm font-semibold text-ink/50">{t("location.phone")}</p>
+                <p className="text-sm font-semibold text-ink/60">{t("location.phone")}</p>
                 <a
                   href={restaurantFacts.contact.phoneTel}
                   className="mt-1 block text-ink hover:text-chili"
@@ -111,6 +111,7 @@ export function HoursLocation() {
                 className="inline-flex items-center justify-center rounded-full border border-ink/20 px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-ink/50"
               >
                 {t("location.whatsapp")}
+                <span className="sr-only"> {t("common.opensInNewTab")}</span>
               </a>
               <a
                 href={restaurantFacts.location.directionsUrl}
@@ -119,6 +120,7 @@ export function HoursLocation() {
                 className="inline-flex items-center justify-center rounded-full border border-ink/20 px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-ink/50"
               >
                 {t("location.getDirections")}
+                <span className="sr-only"> {t("common.opensInNewTab")}</span>
               </a>
               <a
                 href={restaurantFacts.location.googleMapsUrl}
@@ -127,6 +129,7 @@ export function HoursLocation() {
                 className="inline-flex items-center justify-center rounded-full border border-ink/20 px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-ink/50"
               >
                 {t("location.viewOnGoogleMaps")}
+                <span className="sr-only"> {t("common.opensInNewTab")}</span>
               </a>
             </div>
           </div>

@@ -49,8 +49,11 @@ export function Header() {
               <Link
                 key={item.key}
                 href={item.href}
-                className={`text-sm font-medium tracking-wide transition-colors ${
-                  active ? "text-chili" : "text-ink/75 hover:text-ink"
+                aria-current={active ? "page" : undefined}
+                // Color alone (WCAG 1.4.1) shouldn't be the only cue for "current page" — the
+                // active link also gets an underline so it still reads for colorblind visitors.
+                className={`text-sm font-medium tracking-wide underline-offset-4 transition-colors ${
+                  active ? "text-chili underline" : "text-ink/75 hover:text-ink"
                 }`}
               >
                 {t(item.key)}
@@ -72,8 +75,9 @@ export function Header() {
         <button
           type="button"
           className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 md:hidden"
-          aria-label="Toggle menu"
+          aria-label={t("toggleMenu")}
           aria-expanded={open}
+          aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
         >
           <span className="relative block h-3.5 w-5">
@@ -91,13 +95,14 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-ink/10 bg-paper md:hidden">
+        <div id="mobile-nav" className="border-t border-ink/10 bg-paper md:hidden">
           <nav className="flex flex-col gap-1 px-5 py-4">
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
                 onClick={() => setOpen(false)}
+                aria-current={pathname === item.href ? "page" : undefined}
                 className="rounded-lg px-3 py-3 text-base font-medium text-ink hover:bg-ink/5"
               >
                 {t(item.key)}

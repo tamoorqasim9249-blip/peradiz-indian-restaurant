@@ -6,7 +6,7 @@
 // never open the widget, so that logic is only fetched the first time someone clicks it. See
 // CLAUDE.md §11 for the chatbot's grounding/safety rules (unchanged by this split).
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 
@@ -15,12 +15,22 @@ const ChatPanel = dynamic(() => import("./ChatPanel").then((m) => m.ChatPanel));
 export function ChatWidget() {
   const t = useTranslations("chat");
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  function handleClose() {
+    setOpen(false);
+    // The panel (and whatever inside it currently has focus) unmounts on close — without this,
+    // focus would silently fall back to <body>. Returning it to the trigger keeps keyboard/
+    // screen-reader users oriented, whether they closed via the × button or Escape.
+    triggerRef.current?.focus();
+  }
 
   return (
     <div className="fixed bottom-5 end-5 z-50 flex flex-col items-end gap-3">
-      {open && <ChatPanel onClose={() => setOpen(false)} />}
+      {open && <ChatPanel onClose={handleClose} />}
 
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={t("widgetLabel")}

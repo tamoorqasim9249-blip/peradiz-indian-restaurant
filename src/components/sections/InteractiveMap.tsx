@@ -118,6 +118,7 @@ export function InteractiveMap({ className = "" }: { className?: string }) {
             <strong>${name}</strong><br/>
             <a href="${restaurantFacts.location.googleMapsUrl}" target="_blank" rel="noopener noreferrer">
               ${isAr ? "عرض في خرائط جوجل" : "View on Google Maps"}
+              <span class="sr-only"> ${isAr ? "(يفتح في تبويب جديد)" : "(opens in a new tab)"}</span>
             </a>
           </div>`,
         });

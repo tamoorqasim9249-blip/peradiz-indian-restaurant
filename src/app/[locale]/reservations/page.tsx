@@ -43,7 +43,7 @@ export default async function ReservationsPage({
           </span>
           <h1 className="font-display text-4xl text-ink sm:text-5xl">{t("title")}</h1>
           <p className="mx-auto max-w-lg text-ink/60">{t("subtitle")}</p>
-          <p className="mx-auto max-w-lg rounded-xl bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold">
+          <p className="mx-auto max-w-lg rounded-xl bg-gold/10 px-4 py-2.5 text-sm font-medium text-gold-deep">
             {t("disclaimer")}
           </p>
         </div>

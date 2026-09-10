@@ -162,11 +162,21 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
         </button>
       </div>
 
-      <div aria-live="polite" className="flex-1 space-y-3 overflow-y-auto px-4 py-4 text-sm">
+      <div
+        aria-live="polite"
+        aria-busy={isStreaming}
+        className="flex-1 space-y-3 overflow-y-auto px-4 py-4 text-sm"
+      >
         <p className="rounded-xl bg-ink/5 px-3 py-2 text-ink/80">{t("greeting")}</p>
 
         {messages.map((m) => (
-          <ChatMessage key={m.id} role={m.role} content={m.content} isStreaming={isStreaming} />
+          <ChatMessage
+            key={m.id}
+            role={m.role}
+            content={m.content}
+            isStreaming={isStreaming}
+            speakerLabel={m.role === "user" ? t("you") : t("title")}
+          />
         ))}
 
         {notice && <p className="rounded-xl bg-gold/10 px-3 py-2 text-xs text-ink/70">{notice}</p>}
@@ -202,7 +212,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
           placeholder={t("placeholder")}
           disabled={isStreaming}
           maxLength={2000}
-          className="flex-1 rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm text-ink outline-none focus:border-chili disabled:opacity-60"
+          className="flex-1 rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm text-ink outline-none focus:border-chili focus-visible:ring-2 focus-visible:ring-chili focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:opacity-60"
         />
         <button
           type="submit"

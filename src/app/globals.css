@@ -15,6 +15,12 @@
   --color-chili-dark: #96131c;
   --color-gold: #b8925a;
   --color-gold-soft: #d8bd94;
+  /* Same hue/family as --color-gold, deepened for text use on light (paper) backgrounds.
+     --color-gold at full strength is only ~2.6:1 against --color-paper — well under WCAG AA's
+     4.5:1 for normal text — even though it passes comfortably (~6.7:1) on dark --color-ink
+     backgrounds, where it's used unchanged (section eyebrow labels, etc). Use --color-gold-deep
+     specifically for gold-colored *text* sitting on paper/white, never as a new general accent. */
+  --color-gold-deep: #785d34;
 
   --font-display-en: var(--font-playfair);
   --font-body-en: var(--font-inter);
@@ -31,6 +37,7 @@
   --color-chili-dark: var(--color-chili-dark);
   --color-gold: var(--color-gold);
   --color-gold-soft: var(--color-gold-soft);
+  --color-gold-deep: var(--color-gold-deep);
 
   --font-display-en: var(--font-display-en);
   --font-body-en: var(--font-body-en);

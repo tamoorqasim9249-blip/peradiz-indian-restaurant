@@ -70,6 +70,7 @@ export function Footer() {
             className="text-sm text-paper/70 underline decoration-paper/30 underline-offset-4 transition-colors hover:text-paper"
           >
             {t("location.getDirections")}
+            <span className="sr-only"> {t("common.opensInNewTab")}</span>
           </a>
         </div>
 
@@ -84,6 +85,7 @@ export function Footer() {
             className="text-sm text-paper/70 transition-colors hover:text-paper"
           >
             X (Twitter)
+            <span className="sr-only"> {t("common.opensInNewTab")}</span>
           </a>
           <a
             href={restaurantFacts.social.linktree}
@@ -92,13 +94,14 @@ export function Footer() {
             className="text-sm text-paper/70 transition-colors hover:text-paper"
           >
             Linktree
+            <span className="sr-only"> {t("common.opensInNewTab")}</span>
           </a>
         </div>
       </Container>
 
       <div className="border-t border-paper/10 py-5">
         <Container>
-          <p className="text-center text-xs text-paper/45">
+          <p className="text-center text-xs text-paper/60">
             © {year} {restaurantFacts.brand.shortNameEn} — {t("footer.rights")}
           </p>
         </Container>
