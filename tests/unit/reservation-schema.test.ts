@@ -26,7 +26,7 @@ describe("reservationSchema", () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.contactMethod).toBe("PHONE");
-      expect(result.data.locale).toBe("ar");
+      expect(result.data.locale).toBe("en");
     }
   });
 

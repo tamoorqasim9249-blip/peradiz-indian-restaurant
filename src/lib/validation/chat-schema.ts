@@ -13,7 +13,7 @@ const chatMessageSchema = z
 export const chatRequestSchema = z
   .object({
     messages: z.array(chatMessageSchema).min(1).max(20),
-    locale: z.enum(["ar", "en"]).default("ar"),
+    locale: z.enum(["ar", "en"]).default("en"),
   })
   .strict();
 

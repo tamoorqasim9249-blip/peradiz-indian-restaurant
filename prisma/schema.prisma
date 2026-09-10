@@ -27,7 +27,7 @@ model ContactSubmission {
   phone     String
   email     String?
   message   String           @db.Text
-  locale    String           @default("ar")
+  locale    String           @default("en")
   status    SubmissionStatus @default(NEW)
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
@@ -45,7 +45,7 @@ model ReservationRequest {
   preferredTime String
   notes         String?                 @db.Text
   contactMethod PreferredContactMethod  @default(PHONE)
-  locale        String                  @default("ar")
+  locale        String                  @default("en")
   status        SubmissionStatus        @default(NEW)
   createdAt     DateTime                @default(now())
   updatedAt     DateTime                @updatedAt

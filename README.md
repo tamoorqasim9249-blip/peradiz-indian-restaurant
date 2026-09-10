@@ -17,7 +17,8 @@ verified data.
 
 ## Features
 
-- Bilingual UI — Arabic (default, RTL) and English (LTR), locale-prefixed routes (`/ar`, `/en`)
+- Bilingual UI — English (default, LTR) and Arabic (secondary, RTL), locale-prefixed routes
+  (`/en`, `/ar`)
 - Home, Menu, About, Gallery, Contact, and Reservations pages
 - Contact form and reservation-request form, validated and persisted to PostgreSQL
 - Claude-powered chatbot (floating widget, site-wide) that answers questions using only
@@ -104,7 +105,7 @@ add a dependency and a config file this project doesn't otherwise need. Don't `n
 Prisma 6 without deliberately migrating `prisma/schema.prisma` and `src/lib/prisma.ts` to that
 new architecture first.
 
-Visit `/ar` (default) or `/en`. The chatbot widget requires `ANTHROPIC_API_KEY` to respond —
+Visit `/en` (default) or `/ar`. The chatbot widget requires `ANTHROPIC_API_KEY` to respond —
 without it, it shows a graceful "currently unavailable" state rather than failing the build.
 
 Other scripts:

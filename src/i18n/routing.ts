@@ -2,11 +2,11 @@ import { defineRouting } from "next-intl/routing";
 
 /**
  * Locale routing configuration — single source of truth for supported locales.
- * Arabic is the default and primary locale (RTL); English is the secondary locale (LTR).
+ * English is the default and primary locale (LTR); Arabic is the secondary locale (RTL).
  */
 export const routing = defineRouting({
-  locales: ["ar", "en"],
-  defaultLocale: "ar",
+  locales: ["en", "ar"],
+  defaultLocale: "en",
   localePrefix: "always",
   // Explicit cookie hardening for the NEXT_LOCALE preference cookie next-intl sets (default is
   // { name: "NEXT_LOCALE", sameSite: "lax" } with no `secure` flag) — see CLAUDE.md §10 "HTTP

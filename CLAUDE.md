@@ -95,7 +95,8 @@ whitespace, confident typography, restrained motion, premium card/section treatm
 - **Premium components**: elevated card treatments (soft shadows or hairline borders, not flat
   boxes), a real section rhythm (alternating dark/light bands), a considered mobile nav (not a
   bare hamburger dropdown) — see the `design` skill's critique lens during the design pass.
-- **RTL/LTR**: Arabic is the default locale and renders RTL; English is LTR. Use Tailwind's
+- **RTL/LTR**: English is the default/primary locale and renders LTR; Arabic is the secondary
+  locale and renders RTL. Use Tailwind's
   native logical-property utilities (`ms-*`, `me-*`, `ps-*`, `pe-*`, `start-*`, `end-*`,
   `text-start`, `text-end`) — do not use a separate RTL plugin, and do not hand-pair
   `rtl:`/`ltr:` variants except for the rare case a logical utility can't express (e.g. flipping
@@ -208,7 +209,7 @@ model ContactSubmission {
   phone String
   email String?
   message String @db.Text
-  locale String @default("ar")
+  locale String @default("en")
   status SubmissionStatus @default(NEW)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -224,7 +225,7 @@ model ReservationRequest {
   preferredTime String
   notes String?
   contactMethod PreferredContactMethod @default(PHONE)
-  locale String @default("ar")
+  locale String @default("en")
   status SubmissionStatus @default(NEW)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

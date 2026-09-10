@@ -13,7 +13,7 @@ export const reservationSchema = z.object({
     .regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Expected HH:mm"),
   notes: z.string().trim().max(1000).optional(),
   contactMethod: z.enum(["PHONE", "EMAIL"]).default("PHONE"),
-  locale: z.enum(["ar", "en"]).default("ar"),
+  locale: z.enum(["ar", "en"]).default("en"),
   // Honeypot field — see contact-schema.ts.
   website: z.string().max(0).optional(),
 });

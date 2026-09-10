@@ -10,12 +10,12 @@ describe("chatRequestSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("defaults locale to ar when omitted", () => {
+  it("defaults locale to en when omitted", () => {
     const result = chatRequestSchema.safeParse({
       messages: [{ role: "user", content: "hello" }],
     });
     expect(result.success).toBe(true);
-    if (result.success) expect(result.data.locale).toBe("ar");
+    if (result.success) expect(result.data.locale).toBe("en");
   });
 
   it("rejects an empty messages array", () => {
