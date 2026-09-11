@@ -212,7 +212,7 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
           placeholder={t("placeholder")}
           disabled={isStreaming}
           maxLength={2000}
-          className="flex-1 rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm text-ink outline-none focus:border-chili focus-visible:ring-2 focus-visible:ring-chili focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:opacity-60"
+          className="min-w-0 flex-1 rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-sm text-ink outline-none focus:border-chili focus-visible:ring-2 focus-visible:ring-chili focus-visible:ring-offset-2 focus-visible:ring-offset-paper disabled:opacity-60"
         />
         <button
           type="submit"
