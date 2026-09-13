@@ -46,6 +46,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Drops the `X-Powered-By: Next.js` response header — no functional effect, just doesn't
+  // advertise the framework/version to every response for free (CLAUDE.md §10's "never expose
+  // internal detail" spirit, applied beyond just error responses).
+  poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
   },
