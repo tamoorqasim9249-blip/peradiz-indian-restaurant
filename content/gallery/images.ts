@@ -3,12 +3,14 @@ import { menuItems } from "../menu/items";
 /**
  * Gallery image slots.
  *
- * These are placeholder slots (see CLAUDE.md §3/§20) — no real, rights-cleared Peradiz Al Olaya
- * photography was available to source at build time, and copyrighted photos (Google Maps,
- * Instagram, etc.) must never be downloaded and redistributed here without permission. Each
- * entry's `src` is a stable path; dropping a real, licensed photo in at the same path replaces
- * the placeholder with zero code changes. See README.md "Photo Gallery" for how to supply real
- * assets.
+ * `exterior-1`, `exterior-2`, `interior-1`, `interior-2`, `interior-3`, and `presentation-1` now
+ * hold real photos supplied directly by the restaurant (owner-provided, not scraped — see
+ * CLAUDE.md §20). The remaining entries (`dining-area-*`, `presentation-2`, `atmosphere-*`) are
+ * still placeholder slots — no real, rights-cleared photography was available for them yet, and
+ * copyrighted photos (Google Maps, Instagram, etc.) must never be downloaded and redistributed
+ * here without permission. Each entry's `src` is a stable path; dropping a real, licensed photo
+ * in at the same path replaces the placeholder with zero code changes. See README.md "Photo
+ * Gallery" for how to supply real assets.
  *
  * The "dish" category intentionally reuses the existing signature-dish images from
  * `content/menu/items.ts` (`isSignature: true`) rather than duplicating separate gallery-only
@@ -51,8 +53,8 @@ export const galleryImages: GalleryImage[] = [
     id: "exterior-1",
     src: "/images/exterior/exterior-1.jpg",
     category: "exterior",
-    width: 1200,
-    height: 800,
+    width: 800,
+    height: 635,
     altAr: "واجهة مطعم بيراديز في العليا",
     altEn: "Peradiz Al Olaya storefront",
   },
@@ -60,8 +62,8 @@ export const galleryImages: GalleryImage[] = [
     id: "exterior-2",
     src: "/images/gallery/exterior-2.jpg",
     category: "exterior",
-    width: 1200,
-    height: 800,
+    width: 800,
+    height: 492,
     altAr: "مدخل مطعم بيراديز",
     altEn: "Peradiz entrance",
   },
@@ -71,8 +73,8 @@ export const galleryImages: GalleryImage[] = [
     id: "interior-1",
     src: "/images/interior/interior-1.jpg",
     category: "interior",
-    width: 1200,
-    height: 800,
+    width: 800,
+    height: 600,
     altAr: "أجواء داخل مطعم بيراديز",
     altEn: "Interior seating at Peradiz",
   },
@@ -80,17 +82,17 @@ export const galleryImages: GalleryImage[] = [
     id: "interior-2",
     src: "/images/interior/interior-2.jpg",
     category: "interior",
-    width: 1200,
-    height: 800,
-    altAr: "الغرف العائلية المغلقة",
-    altEn: "Private family dining room",
+    width: 800,
+    height: 450,
+    altAr: "منطقة البار في بيراديز",
+    altEn: "Bar area at Peradiz",
   },
   {
     id: "interior-3",
     src: "/images/interior/interior-3.jpg",
     category: "interior",
-    width: 1200,
-    height: 800,
+    width: 220,
+    height: 275,
     altAr: "تصميم داخلي فاخر",
     altEn: "Premium interior design detail",
   },
@@ -123,10 +125,10 @@ export const galleryImages: GalleryImage[] = [
     id: "presentation-1",
     src: "/images/gallery/presentation-1.jpg",
     category: "presentation",
-    width: 1000,
-    height: 1200,
-    altAr: "تقديم أنيق لأحد الأطباق الهندية",
-    altEn: "Elegant close-up plating of an Indian dish",
+    width: 800,
+    height: 600,
+    altAr: "تشكيلة مشاوي تندوري مع البرياني والنان في بيراديز",
+    altEn: "A spread of tandoori grills, biryani, and naan at Peradiz",
   },
   {
     id: "presentation-2",

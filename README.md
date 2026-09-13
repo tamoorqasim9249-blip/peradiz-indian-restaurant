@@ -134,11 +134,12 @@ npx prisma studio     # inspect ContactSubmission / ReservationRequest rows
 filtering (exterior, interior, dining area, signature dishes, presentation, atmosphere) and a
 keyboard- and swipe-navigable lightbox (`src/components/sections/{GalleryGrid,Lightbox}.tsx`).
 
-Every image in it today is an on-brand gradient **placeholder** — see
-`content/gallery/images.ts`. Real restaurant photography was not available under a license that
-permits redistribution at build time (Google Maps/Instagram photos, for example, cannot be
-downloaded and reused without the rights holder's permission — see CLAUDE.md §20). To add real
-photos:
+Several entries (`exterior-1`, `exterior-2`, `interior-1`, `interior-2`, `interior-3`,
+`presentation-1`) now hold real, owner-supplied photos; the rest are still an on-brand gradient
+**placeholder** — see `content/gallery/images.ts`. Real restaurant photography must come from a
+license that permits redistribution (owner-supplied photos, a licensed shoot, or properly
+licensed stock) — Google Maps/Instagram photos, for example, cannot be downloaded and reused
+without the rights holder's permission (see CLAUDE.md §20). To add more real photos:
 
 1. Get photography you have the rights to use (owner-supplied photos, a licensed shoot, or
    stock images licensed for this specific use).
