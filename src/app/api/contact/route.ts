@@ -1,7 +1,9 @@
+import { restaurantFacts } from "../../../../content/restaurant-facts";
 import { contactSchema } from "@/lib/validation/contact-schema";
-import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { isTrustedOrigin } from "@/lib/same-origin";
 import { prisma } from "@/lib/prisma";
+import { apiSuccess } from "@/lib/api/response";
+import { toErrorResponse } from "@/lib/api/errors";
+import { enforceRateLimit, readJsonBody, requireTrustedOrigin, PUBLIC_DATA_CACHE_HEADERS } from "@/lib/api/guard";
 
 export const runtime = "nodejs";
 
@@ -10,64 +12,60 @@ export const runtime = "nodejs";
 const MAX_BODY_BYTES = 20_000;
 
 /**
+ * GET /api/contact — the restaurant's own public contact info (phone, WhatsApp, address). See
+ * CLAUDE.md §7/§9. Distinct from POST below, which submits a visitor's message.
+ */
+export async function GET(request: Request) {
+  try {
+    enforceRateLimit(request, "contact-info", { limit: 60, windowMs: 60_000 });
+
+    const { phoneDisplay, phoneE164, whatsappUrl } = restaurantFacts.contact;
+    return apiSuccess(
+      {
+        phone: { display: phoneDisplay, e164: phoneE164 },
+        whatsapp: whatsappUrl,
+        address: {
+          ar: restaurantFacts.location.addressAr,
+          en: restaurantFacts.location.addressEn,
+        },
+      },
+      { headers: PUBLIC_DATA_CACHE_HEADERS }
+    );
+  } catch (err) {
+    return toErrorResponse(err, "contact.get");
+  }
+}
+
+/**
  * POST /api/contact — validate + persist a ContactSubmission. See CLAUDE.md §7/§9.
  */
 export async function POST(request: Request) {
-  if (!isTrustedOrigin(request)) {
-    return Response.json({ error: "forbidden" }, { status: 403 });
-  }
-
-  const ip = getClientIp(request);
-  const limit = rateLimit(`contact:${ip}`, { limit: 5, windowMs: 60_000 });
-  if (!limit.allowed) {
-    return Response.json(
-      { error: "rate_limited", retryAfterSeconds: limit.retryAfterSeconds },
-      { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds ?? 60) } }
-    );
-  }
-
-  const contentLength = request.headers.get("content-length");
-  if (contentLength && Number(contentLength) > MAX_BODY_BYTES) {
-    return Response.json({ error: "payload_too_large" }, { status: 413 });
-  }
-
-  let body: unknown;
   try {
-    const rawBody = await request.text();
-    if (rawBody.length > MAX_BODY_BYTES) {
-      return Response.json({ error: "payload_too_large" }, { status: 413 });
+    requireTrustedOrigin(request);
+    enforceRateLimit(request, "contact", { limit: 5, windowMs: 60_000 });
+    const data = await readJsonBody(request, contactSchema, { maxBytes: MAX_BODY_BYTES });
+
+    // Honeypot: a real visitor never fills this in. Respond as if it succeeded (so a bot doesn't
+    // learn to leave it blank) but skip the DB write. See CLAUDE.md §10/§20.
+    if (data.website) {
+      return apiSuccess(null, { status: 201 });
     }
-    body = JSON.parse(rawBody);
-  } catch {
-    return Response.json({ error: "invalid_json" }, { status: 400 });
-  }
 
-  const parsed = contactSchema.safeParse(body);
-  if (!parsed.success) {
-    return Response.json({ error: "invalid_request" }, { status: 400 });
-  }
-
-  // Honeypot: a real visitor never fills this in. Respond as if it succeeded (so a bot doesn't
-  // learn to leave it blank) but skip the DB write. See CLAUDE.md §10/§20.
-  if (parsed.data.website) {
-    return Response.json({ ok: true }, { status: 201 });
-  }
-
-  try {
+    // A Prisma failure here is an unexpected error, not an `ApiError` — it falls through to the
+    // catch below, which logs it (never the client-facing response) via toErrorResponse. See
+    // CLAUDE.md §9/§10.
     await prisma.contactSubmission.create({
       data: {
-        name: parsed.data.name,
-        phone: parsed.data.phone,
-        email: parsed.data.email || undefined,
-        message: parsed.data.message,
-        locale: parsed.data.locale,
+        name: data.name,
+        phone: data.phone,
+        email: data.email || undefined,
+        message: data.message,
+        locale: data.locale,
       },
     });
-  } catch (err) {
-    // Never leak internal error detail to the client — see CLAUDE.md §9.
-    console.error("[/api/contact] Prisma error:", err instanceof Error ? err.message : err);
-    return Response.json({ error: "server_error" }, { status: 500 });
-  }
 
-  return Response.json({ ok: true }, { status: 201 });
+    return apiSuccess(null, { status: 201 });
+  } catch (err) {
+    return toErrorResponse(err, "contact.post");
+  }
 }

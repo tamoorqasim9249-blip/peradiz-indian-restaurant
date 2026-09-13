@@ -148,10 +148,13 @@ peradiz/
     ├── app/
     │   ├── sitemap.ts, robots.ts
     │   ├── [locale]/{layout,page,menu,about,gallery,contact,reservations}/...
-    │   └── api/{contact,reservations,chat}/route.ts
+    │   └── api/
+    │       ├── {contact,reservations,chat}/route.ts        # mutating (see §7/§9)
+    │       └── {restaurant,menu,hours,map}/route.ts         # read-only public data (see §7/§9)
     ├── components/{ui,layout,sections,forms,chat}/
     ├── lib/
-    │   ├── prisma.ts, rate-limit.ts
+    │   ├── prisma.ts, rate-limit.ts, same-origin.ts
+    │   ├── api/{response,errors,logger,guard}.ts   # shared API kernel — every route uses this, see §7
     │   ├── hours/status.ts        # Asia/Riyadh open/closed engine — see §21
     │   ├── i18n/, validation/{contact,reservation,chat}-schema.ts
     │   ├── chat/{system-prompt,anthropic-client}.ts
@@ -188,15 +191,41 @@ peradiz/
 
 ## 7. Backend Architecture
 
-- Three API routes only: `POST /api/contact`, `POST /api/reservations`, `POST /api/chat`
-  (streaming). No other backend surface in v1 — no admin API, no auth API.
-- Every route: validates the request body with the matching zod schema from
-  `lib/validation/`, applies per-IP rate limiting from `lib/rate-limit.ts` before any DB/LLM
-  call, and rejects cross-origin `Origin`/`Referer` on state-changing routes as CSRF
-  defense-in-depth.
-- No admin dashboard or authenticated staff UI in v1 — staff review submissions via Prisma
-  Studio against the production DB (restricted access) or a future lightweight email-notification
-  add-on. Do not build an auth system speculatively.
+Every route is built on a small shared kernel in `src/lib/api/` — no route hand-rolls its own
+response shape, error handling, or rate limiting:
+
+- `response.ts` — the one JSON envelope every route returns: `apiSuccess(data)` →
+  `{ ok: true, data }`; `apiError(code, message, status)` → `{ ok: false, error: { code, message } }`.
+- `errors.ts` — `ApiError` (a known, deliberately-thrown error) and `toErrorResponse(err, route)`,
+  which every route's outer `try/catch` calls. This is the single mechanism that guarantees an
+  API response never exposes secrets or internal detail: a recognized `ApiError` becomes its own
+  response; anything else (a raw Prisma/Anthropic error, a bug) is logged in full server-side and
+  turned into a generic `internal_error` with no detail attached.
+- `logger.ts` — structured JSON log lines (`logInfo`/`logWarn`/`logError`) to stdout, captured by
+  the hosting platform's log pipeline. No logging dependency — see §4's dependency test. Call
+  sites pass only route/event names and safe metadata — never a request body or an env var value.
+- `guard.ts` — the composed per-request pieces: `requireTrustedOrigin` (CSRF defense-in-depth,
+  mutating routes only), `enforceRateLimit` (every route, via `lib/rate-limit.ts`), `readJsonBody`
+  (size-capped, zod-validated parsing, mutating routes only).
+
+Two kinds of routes, both built on that kernel:
+
+- **Mutating** (`POST /api/contact`, `POST /api/reservations`, `POST /api/chat`): origin-checked,
+  rate-limited, zod-validated before any DB/LLM call. `POST /api/chat`'s success response is a
+  raw `text/plain` stream — the one documented exception to the `{ ok, data }` envelope (its
+  client reads a `ReadableStream` directly); every error path before the stream starts still uses
+  the standard envelope.
+- **Read-only public data** (`GET /api/restaurant`, `/api/menu`, `/api/hours`, `GET /api/contact`,
+  `/api/map` — see §9): rate-limited but **not** origin-checked (cacheable, side-effect-free,
+  already-public data — an Origin check would only break a legitimate non-browser caller for no
+  security benefit), and cache-control'd (`max-age=300`) since the underlying content only
+  changes on redeploy. These are an *additive* API surface — existing pages keep importing
+  `content/*.ts` directly for rendering (§14: prefer static rendering over client fetches); the
+  routes exist for future/external consumers.
+
+No admin dashboard or authenticated staff UI in v1 — staff review submissions via Prisma
+Studio against the production DB (restricted access) or a future lightweight email-notification
+add-on. Do not build an auth system speculatively.
 
 ## 8. Database Architecture
 
@@ -242,11 +271,22 @@ global-caching pattern to avoid connection exhaustion in serverless.
 
 ## 9. API Architecture
 
+Every response uses the shared envelope from `lib/api/response.ts` — success:
+`{ ok: true, data }`; error: `{ ok: false, error: { code, message } }` — except `POST /api/chat`'s
+streaming success body (see §7). All routes return typed JSON error shapes on validation failure
+(400) and never leak stack traces or internal error detail to the client in production (see
+`lib/api/errors.ts`).
+
 | Route | Method | Purpose |
 |---|---|---|
+| `/api/contact` | GET | Public contact info (phone, WhatsApp, address) |
 | `/api/contact` | POST | Validate + persist a `ContactSubmission` |
 | `/api/reservations` | POST | Validate + persist a `ReservationRequest` |
 | `/api/chat` | POST | Streaming Claude chatbot reply, grounded in `restaurant-facts.ts` |
+| `/api/restaurant` | GET | Public restaurant info from `content/restaurant.ts` (excludes `menu` — see `/api/menu`) |
+| `/api/menu` | GET | Menu categories + items (names/descriptions only, never prices) |
+| `/api/hours` | GET | Verified opening-hours fragment + `isVerified: false` — never a computed OPEN NOW/CLOSED status (§21.5) |
+| `/api/map` | GET | Location/map info (coordinates, plus code, Maps URLs) — never `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` |
 
 All routes return typed JSON error shapes on validation failure (400) and never leak stack
 traces or internal error detail to the client in production.
