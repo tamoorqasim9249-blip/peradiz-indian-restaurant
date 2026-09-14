@@ -14,8 +14,8 @@ export const reservationSchema = z.object({
   notes: z.string().trim().max(1000).optional(),
   contactMethod: z.enum(["PHONE", "EMAIL"]).default("PHONE"),
   locale: z.enum(["ar", "en"]).default("en"),
-  // Honeypot field — see contact-schema.ts.
-  website: z.string().max(0).optional(),
+  // Honeypot field — see contact-schema.ts for why this isn't `.max(0)`.
+  website: z.string().optional(),
 });
 
 export type ReservationInput = z.infer<typeof reservationSchema>;

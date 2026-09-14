@@ -7,8 +7,13 @@ export const contactSchema = z.object({
   email: z.union([z.literal(""), z.string().trim().email()]).optional(),
   message: z.string().trim().min(5).max(2000),
   locale: z.enum(["ar", "en"]).default("en"),
-  // Honeypot field — real users never fill this in; bots often do. See CLAUDE.md §10.
-  website: z.string().max(0).optional(),
+  // Honeypot field — real users never fill this in (it's hidden from view); bots that fill
+  // every field they find often do. Deliberately NOT `.max(0)`: that would make a non-empty
+  // value fail validation with a 400 before the route ever reaches its `if (data.website)`
+  // check, revealing detection to the bot and making that check dead code. Accepting any string
+  // here lets a filled-in honeypot reach the route, which then fakes a success response instead
+  // — see CLAUDE.md §10/§20 and src/app/api/contact/route.ts.
+  website: z.string().optional(),
 });
 
 export type ContactInput = z.infer<typeof contactSchema>;
