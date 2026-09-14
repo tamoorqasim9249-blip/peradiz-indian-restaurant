@@ -26,6 +26,9 @@
     "react-hook-form": "^7.87.0",
     "zod": "^4.5.4"
   },
+  "overrides": {
+    "deepmerge-ts": "^8.0.2"
+  },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
