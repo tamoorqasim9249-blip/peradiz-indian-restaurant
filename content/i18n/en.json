@@ -174,5 +174,11 @@
     "description": "We hit an unexpected error on our end. Please try again, or call us directly if it keeps happening.",
     "retry": "Try Again",
     "callUs": "Call Us"
+  },
+  "notFoundPage": {
+    "title": "Page Not Found",
+    "description": "The page you're looking for doesn't exist or may have moved. Let's get you back on track.",
+    "backHome": "Back to Home",
+    "callUs": "Call Us"
   }
 }
