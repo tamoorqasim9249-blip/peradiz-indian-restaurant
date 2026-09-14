@@ -427,11 +427,22 @@ available in this environment for that step when the user requests it.
   `system-prompt.ts` — a regression guard asserting the built prompt contains only verified
   facts and never contains an invented price/full-hours string; `json-ld.ts` — asserts
   `priceRange`/`openingHoursSpecification` are absent and required `Restaurant` fields are
-  present.
-- **E2E (Playwright)**, happy-path smoke coverage only: locale switch + RTL/LTR `dir` flip and
-  nav; contact form submit success + validation error; reservation form submit success +
-  validation error; chatbot open → send message → receive streamed reply (mock the Anthropic
-  call in test env).
+  present; `hours/status.ts`'s open/closed engine against fixed, timezone-explicit fixtures;
+  the `lib/api/` kernel (`rate-limit.ts`/`same-origin.ts`/`guard.ts`/`errors.ts`) — rate-limit
+  windows and per-key isolation, `isTrustedOrigin`'s origin/host matching, and the
+  `toErrorResponse` regression guard that an arbitrary thrown error never leaks its message to
+  the client; and every route handler (`menu`, `restaurant`, `hours`, `map`, `contact`,
+  `reservations`, `chat`) for its success shape, rate limiting, origin/CSRF rejection on the
+  mutating routes, input validation, and — for the mutating routes — a mocked-Prisma/mocked-
+  Anthropic check that a database/API failure never leaks connection or key detail to the
+  client. There is no user authentication in v1 (§7/§10), so no auth/authorization test suite
+  applies beyond the origin check above, which is this app's only access-control boundary.
+- **E2E (Playwright)**, happy-path smoke coverage only, run against both a Desktop and a Mobile
+  Chrome project (`playwright.config.ts`): locale switch + RTL/LTR `dir` flip and nav, and the
+  responsive desktop-inline-nav vs. mobile-hamburger-nav split; contact form submit success +
+  validation error; reservation form submit success + validation error; chatbot open → send
+  message → receive streamed reply (mocked at the `/api/chat` network boundary, not the real
+  Anthropic API).
 - `npm run lint` and `npm run typecheck` must pass with zero errors before any change is
   considered done.
 - No CI pipeline, visual regression, load testing, or full cross-browser matrix in v1 — not
