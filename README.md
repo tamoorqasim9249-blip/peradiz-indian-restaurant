@@ -194,10 +194,19 @@ pass before shipping any change touching auth, forms, or the chatbot.
 ## Testing
 
 ```bash
-npm run test        # Vitest: zod schemas, chatbot system-prompt regression guard, JSON-LD shape
-npm run test:e2e     # Playwright: locale/RTL, contact form, reservation form, chatbot happy path
+npm run test        # Vitest: zod schemas, chatbot system-prompt regression guard, JSON-LD shape,
+                     #   the /api/* route kernel (rate limiting, origin/CSRF checks, error
+                     #   envelopes never leaking secrets), and every route handler (menu,
+                     #   restaurant, hours, map, contact, reservations, chat)
+npm run test:e2e     # Playwright: locale/RTL + nav, contact form, reservation form, chatbot happy
+                     #   path — each spec runs against both a Desktop and a Mobile Chrome project
 npm run lint && npm run typecheck
 ```
+
+`npm run test:e2e` starts the dev server itself (see `playwright.config.ts`) and needs the
+Chromium browser installed once via `npx playwright install chromium`. Its specs mock the
+contact/reservation/chat network calls (`page.route`) rather than hitting a real database or the
+Anthropic API — see the comment at the top of `playwright.config.ts`.
 
 Test scope is intentionally proportionate to a single-branch marketing site — see
 [`CLAUDE.md` §19](CLAUDE.md) for what's deliberately out of scope (CI pipeline, visual
